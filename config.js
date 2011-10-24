@@ -11,7 +11,7 @@ var config = {
 	chans: [
 		'#chat'
 	],
-	api_key: ''
+	api_key: '' // Your last.fm API key
 }
 
 module.exports = config;
