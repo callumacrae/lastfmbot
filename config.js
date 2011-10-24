@@ -11,6 +11,7 @@ var config = {
 	chans: [
 		'#chat'
 	],
+	admin_regex: ':nub![^!@]+@lynxphp\.com',
 	api_key: '' // Your last.fm API key
 }
 

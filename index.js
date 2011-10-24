@@ -24,7 +24,7 @@ irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.np(?: ([a-zA-Z0-9_\-]+))?$/
 	message_parse.apply(null, info);
 });
 
-irc.on(/^:nub![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.flush?$/, function(info) {
+irc.on(new RegExp('^' + config.admin_regex + ' PRIVMSG (#[^ ]+) :\\\.flush?$'), function(info) {
 	eval(fs.readFileSync('./process.js', 'utf8'));
 	console.log('Flushed.');
 });
