@@ -1,4 +1,4 @@
-gen_message = function(info) {
+gen_mess = function(info) {
 	var loves = (info.loved) ? '<3 - ' : '';
 	return info.user + ' ' + ((info.current) ? 'is' : 'was') + ' listening to ' + info.artist
 		+ ' - ' + info.track + ' from the album ' + info.album + ' (' + loves + 'played '
