@@ -34,6 +34,7 @@ message_parse = function(un, chan) {
 				
 				options.path = '/2.0/?method=track.getinfo&format=json&api_key=' + config.api_key
 					+ '&artist=' + info.artist + '&track=' + info.track + '&username=' + info.user
+				console.log(options.path);
 				var req2 = http.get(options, function(res) {
 					var body2 = '';
 					res.on('data', function(chunk) {
@@ -47,16 +48,16 @@ message_parse = function(un, chan) {
 				});
 				
 				req2.on('error', function(e) {
-					console.log('ERROR: ' + e.message);
+					console.log('ERROR3: ' + e.message);
 				});
 			} catch (err) {
-				console.log('ERROR: ' + err);
+				console.log('ERROR2: ' + err);
 			}
 		});
 	});
 	
 	req.on('error', function(e) {
-		console.log('ERROR: ' + e.message);
+		console.log('ERROR1: ' + e.message);
 	});
 }
 
