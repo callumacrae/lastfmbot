@@ -1,1 +1,3 @@
 Use .np for your current nick, or .np <nick> for someone elses.
+
+To install, just renamed config.sample.js to config.js and change some settings.

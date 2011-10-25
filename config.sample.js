@@ -1,8 +1,8 @@
 var config = {
 	user: {
-		nick: 'last-nub',
-		user: 'nub',
-		real: 'nubs last.fm bot'
+		nick: '',
+		user: '',
+		real: ''
 	},
 	server: {
 		addr: 'irc.efnet.org',
