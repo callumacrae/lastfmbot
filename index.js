@@ -1,7 +1,8 @@
 var fs = require('fs'),
 	http = require('http'),
 	IRC = require('irc'),
-	config = require('./config');
+	config = require('./config'),
+	message_parse, set_user, users = {};
 
 if (process.argv[2]) {
 	config.server.addr = process.argv[2];
@@ -17,11 +18,11 @@ eval(fs.readFileSync('./process.js', 'utf8'));
 
 global.irc = new IRC(config);
 irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.np(?: ([a-zA-Z0-9_\-]+))?$/, function(info) {
-	if (info[3] === undefined) {
-		info[3] = info[1];
-	}
-	info.splice(0, 1);
-	message_parse.apply(null, info);
+	message_parse(info[3] || info[1], info[2]);
+});
+
+irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.setuser ([a-zA-Z0-9_\-]+)$/, function(info) {
+	set_user(info[1], info[3], info[2]);
 });
 
 irc.on(new RegExp('^' + config.admin_regex + ' PRIVMSG (#[^ ]+) :\\\.flush?$'), function(info) {

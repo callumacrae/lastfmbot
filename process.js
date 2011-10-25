@@ -1,4 +1,8 @@
-message_parse = function(nick, chan, un) {
+message_parse = function(un, chan) {
+	if (users[un] !== undefined) {
+		un = users[un];
+	}
+	
 	var options = {
 		host: 'ws.audioscrobbler.com',
 		port: 80,
@@ -26,4 +30,9 @@ message_parse = function(nick, chan, un) {
 	req.on('error', function(e) {
 		console.log('ERROR: ' + e.message);
 	});
+}
+
+set_user = function(nick, un, chan) {
+	users[nick] = un;
+	irc.raw('PRIVMSG ' + chan + ' :' + nick + ' is now associated with last.fm account ' + un);
 }
