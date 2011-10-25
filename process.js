@@ -1,3 +1,10 @@
+gen_message = function(info) {
+	var loves = (info.loved) ? '<3 - ' : '';
+	return info.user + ' ' + ((info.current) ? 'is' : 'was') + ' listening to ' + info.artist
+		+ ' - ' + info.track + ' from the album ' + info.album + ' (' + loves + 'played '
+		+ info.plays + 'times)';
+}
+
 message_parse = function(un, chan) {
 	if (users[un] !== undefined) {
 		un = users[un];
@@ -8,6 +15,8 @@ message_parse = function(un, chan) {
 		port: 80,
 		path: '/2.0/?method=user.getrecenttracks&api_key=' + config.api_key + '&format=json&user=' + un
 	};
+	
+	var info = {};
 
 	var req = http.get(options, function(res) {
 		var body = '';
@@ -17,10 +26,29 @@ message_parse = function(un, chan) {
 			try {
 				body = JSON.parse(body);
 				var t = body.recenttracks.track[0];
-				var iswas = (t['@attr'] === undefined) ? 'was' : 'is';
-				var message = body.recenttracks['@attr'].user + ' ' + iswas + ' listening to '
-					+ t.artist['#text'] + ' - ' + t.name + ' from the album ' + t.album['#text'] + '.';
-				irc.raw('PRIVMSG ' + chan + ' :' + message);
+				info.current = (t['@attr'] === undefined);
+				info.user = body.recenttracks['@attr'].user;
+				info.artist = t.artist['#text'];
+				info.track = t.name;
+				info.album = t.album['#album'];
+				
+				options.path = '/2.0/?method=track.getinfo&format=json&api_key=' + config.api_key
+					+ '&artist=' + info.artist + '&track=' + info.track + '&username=' + info.user
+				var req2 = http.get(options, function(res) {
+					var body2 = '';
+					res.on('data', function(chunk) {
+						body += chunk;
+					}).on('end', function() {
+						body2 = JSON.parse(body2);
+						info.plays = body2.track.userplaycount;
+						info.loved = (body2.track.userloved === 1);
+						irc.raw('PRIVMSG ' + chan + ' :' + gen_mess(info));
+					});
+				});
+				
+				req2.on('error', function(e) {
+					console.log('ERROR: ' + e.message);
+				});
 			} catch (err) {
 				console.log('ERROR: ' + err);
 			}

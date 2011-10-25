@@ -2,7 +2,8 @@ var fs = require('fs'),
 	http = require('http'),
 	IRC = require('irc'),
 	config = require('./config'),
-	message_parse, set_user, users = {};
+	gen_mess, message_parse, set_user,
+	users = {};
 
 if (process.argv[2]) {
 	config.server.addr = process.argv[2];
