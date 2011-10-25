@@ -39,7 +39,7 @@ message_parse = function(un, chan) {
 				var req2 = http.get(options, function(res) {
 					var body2 = '';
 					res.on('data', function(chunk) {
-						body += chunk;
+						body2 += chunk;
 					}).on('end', function() {
 						body2 = JSON.parse(body2);
 						info.plays = body2.track.userplaycount;
