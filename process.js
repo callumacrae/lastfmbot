@@ -32,8 +32,9 @@ message_parse = function(un, chan) {
 				info.track = t.name;
 				info.album = t.album['#album'];
 				
-				options.path = '/2.0/?method=track.getinfo&format=json&api_key=' + config.api_key
-					+ '&artist=' + info.artist + '&track=' + info.track + '&username=' + info.user
+				options.path = '/2.0/?method=track.getinfo&format=json&api_key='
+					+ config.api_key + '&artist=' + encodeURIComponent(info.artist)
+					+ '&track=' + encodeURIComponent(info.track) + '&username=' + info.user
 				console.log(options.path);
 				var req2 = http.get(options, function(res) {
 					var body2 = '';
