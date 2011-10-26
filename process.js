@@ -72,3 +72,8 @@ set_user = function(nick, un, chan) {
 		}
 	});
 }
+
+whois_user = function(un, chan) {
+	var n_un = (users[un] !== undefined) ? user[un] : un;
+	irc.raw('PRIVMSG ' + chan + ' :' + un + ' is ' + n_un);
+}

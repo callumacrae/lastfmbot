@@ -2,7 +2,7 @@ var fs = require('fs'),
 	http = require('http'),
 	IRC = require('irc'),
 	config = require('./config'),
-	gen_mess, message_parse, set_user;
+	gen_mess, message_parse, set_user, whois_user;
 
 if (process.argv[2]) {
 	config.server.addr = process.argv[2];
@@ -25,6 +25,10 @@ irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.np(?: ([a-zA-Z0-9_\-]+))?$/
 
 irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.setuser ([a-zA-Z0-9_\-]+)$/, function(info) {
 	set_user(info[1], info[3], info[2]);
+});
+
+irc.on(/^:([^ !]+)![^!@]+@[^@ ]+ PRIVMSG (#[^ ]+) :\.whois ([a-zA-Z0-9_\-]+)$/, function(info) {
+	whois_user(info[3] || info[1], info[2]);
 });
 
 irc.on(new RegExp('^' + config.admin_regex + ' PRIVMSG (#[^ ]+) :\\\.flush?$'), function(info) {
