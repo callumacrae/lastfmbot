@@ -64,4 +64,11 @@ message_parse = function(un, chan) {
 set_user = function(nick, un, chan) {
 	users[nick] = un;
 	irc.raw('PRIVMSG ' + chan + ' :' + nick + ' is now associated with last.fm account ' + un);
+	fs.writeFile('./users_cache', JSON.stringify(users), function (err) {
+		if (err) {
+			console.log('ERROR4: ', e)
+		} else {
+			console.log('Successfully saved users_cache');
+		}
+	});
 }

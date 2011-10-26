@@ -2,8 +2,7 @@ var fs = require('fs'),
 	http = require('http'),
 	IRC = require('irc'),
 	config = require('./config'),
-	gen_mess, message_parse, set_user,
-	users = {};
+	gen_mess, message_parse, set_user;
 
 if (process.argv[2]) {
 	config.server.addr = process.argv[2];
@@ -14,6 +13,8 @@ if (process.argv[3]) {
 if (process.argv[4]) {
 	config.user.nick = process.argv[4];
 }
+
+var users = JSON.parse(fs.readFileSync('./users_cache', 'utf8'));
 
 eval(fs.readFileSync('./process.js', 'utf8'));
 
